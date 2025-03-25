@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { Text } from "react-native"; 
 import { useFonts } from "expo-font";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
-
+import LoginScreen from './../components/LoginScreen';
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     roboto: require("../assets/fonts/Roboto-Regular.ttf"),
@@ -23,7 +23,7 @@ export default function RootLayout() {
       </SignedIn>
       
       <SignedOut>
-        <Text>Signed out</Text>
+       <LoginScreen/>
       </SignedOut>
     </ClerkProvider>
   );
