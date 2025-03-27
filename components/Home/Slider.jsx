@@ -43,7 +43,7 @@ export default function Slider() {
     <FlatList
     data={sliderList}
     horizontal={true}
-    style={{paddingLeft:20}}
+    style={{paddingLeft:10}}
     renderItem={({item,index})=>(
         <Image source={{uri:item.ImageUrl}}  
         style={{width:300,height:160,borderRadius:10,marginRight:15}}/>

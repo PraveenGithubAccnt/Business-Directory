@@ -1,9 +1,10 @@
 import { View, Text, FlatList, Image } from "react-native";
 import React, { useEffect } from "react";
-import { collection, doc, getDocs, query, QuerySnapshot } from "firebase/firestore"; 
+import { collection, getDocs, query } from "firebase/firestore"; 
 import { db } from "../../Backend/FirebaseConfig";
 import { useState } from "react";
 import CategoryItem from "./CategoryItem";
+
 export default function Category() {
 
   const [categoryList, setcategoryList] = useState([]);
@@ -18,7 +19,7 @@ useEffect(()=>{
     const q=query(collection(db,'Category'));
     const querySnapshot=await getDocs(q);
     querySnapshot.forEach((doc)=>{
-      console.log(doc.data());
+      // console.log(doc.data());
       setcategoryList((prev) => [...prev, doc.data()]);
     })
   }

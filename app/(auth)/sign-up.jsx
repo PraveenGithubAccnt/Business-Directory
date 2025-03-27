@@ -125,7 +125,7 @@ export default function SignUpScreen() {
 
     {/* Sign-up Header */}
     <Text style={{ fontSize: 28, fontFamily: 'roboto_bold', color: '#7851A9', marginBottom: 10 }}>
-      Sign Up
+      Register
     </Text>
 
     {/* Email Input */}
