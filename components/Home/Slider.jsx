@@ -18,11 +18,11 @@ export default function Slider() {
       const querySnapshot = await getDocs(q);
 
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        // console.log(doc.id, " => ", doc.data());
         setSliderList((prev) => [...prev, doc.data()]);
       });
     } catch (error) {
-      console.error("Error fetching slider data:", error);
+      // console.error("Error fetching slider data:", error);
     }
   };
 
