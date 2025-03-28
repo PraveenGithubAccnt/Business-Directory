@@ -4,14 +4,14 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../Backend/FirebaseConfig";
 import { useState } from "react";
 import CategoryItem from "./CategoryItem";
-
+import {useRouter} from 'expo-router';
 export default function Category() {
 
   const [categoryList, setcategoryList] = useState([]);
-
+  const router=useRouter();
 useEffect(()=>{
   GetCategoryList()
-},[])
+},[]);
 
   const GetCategoryList=async()=>
   { 
@@ -51,7 +51,7 @@ useEffect(()=>{
         <CategoryItem 
         Category={item} 
         key={index}
-        onCategoryPress={(Category)=>console.log(Category)}
+        onCategoryPress={(Category)=>router.push('/businesslist/'+item.Name)}
         
         />
       )}

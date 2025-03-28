@@ -22,7 +22,7 @@ export default function BusinessCart({ business }) {
         source={{ uri: business?.imageUrl }}
         style={{
           width: "100%",
-          height: 160,
+          height: 150,
           borderRadius: 15, 
           backgroundColor: "#D8BFD8", 
         }}
@@ -85,7 +85,7 @@ export default function BusinessCart({ business }) {
               color: "#333",
             }}
           >
-            {business.rating || "4.0"}
+            {business.rating}
           </Text>
         </View>
       </View>

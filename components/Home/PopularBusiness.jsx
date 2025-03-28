@@ -17,13 +17,13 @@ export default function PopularBusiness() {
       const q=query(collection(db,'BusinessList'),limit(10));
       const querySnapshot=await getDocs(q);
       querySnapshot.forEach((doc)=>{
-        console.log(doc.data());
+        // console.log(doc.data());
         setbusinessList((prev) => [...prev, doc.data()]);
       })
     }
 
   return (
-    <View>
+    <View style={{paddingLeft: 10,}}>
       {/* Header */}
       <View
         style={{
@@ -44,7 +44,7 @@ export default function PopularBusiness() {
       <FlatList
         data={businessList}
         horizontal={true}
-        keyExtractor={(item, index) => index.toString()} // Proper key handling
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => 
         <BusinessCart business={item} 
         
