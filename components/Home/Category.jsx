@@ -1,62 +1,87 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image,ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
-import { collection, getDocs, query } from "firebase/firestore"; 
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../Backend/FirebaseConfig";
 import { useState } from "react";
 import CategoryItem from "./CategoryItem";
-import {useRouter} from 'expo-router';
+import { useRouter } from "expo-router";
 export default function Category() {
-
   const [categoryList, setcategoryList] = useState([]);
-  const router=useRouter();
-useEffect(()=>{
-  GetCategoryList()
-},[]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    GetCategoryList();
+  }, []);
 
-  const GetCategoryList=async()=>
-  { 
-    setcategoryList([]);
-    const q=query(collection(db,'Category'));
-    const querySnapshot=await getDocs(q);
-    querySnapshot.forEach((doc)=>{
-      // console.log(doc.data());
-      setcategoryList((prev) => [...prev, doc.data()]);
-    })
-  }
+  const GetCategoryList = async () => {
+    try {
+      setLoading(true);
+      setcategoryList([]);
+      const q = query(collection(db, "Category"));
+      const querySnapshot = await getDocs(q);
+      const categories = querySnapshot.docs.map(doc => doc.data());
+      setcategoryList(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+    setLoading(false);
+  };
 
   return (
     <View>
-      
-      <View style={{display:"flex",flexDirection:"row", justifyContent:"space-between",
-          padding: 10,
-          marginBottom: 5,}}>
-        
-        <Text
+      <View
         style={{
-          fontSize: 16,
-          fontFamily: "roboto_bold",
-          color: "black"
-        }}>Categories</Text>
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 10,
+          marginBottom: 5,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "roboto_bold",
+            color: "black",
+          }}
+        >
+          Categories
+        </Text>
 
-      <Text style={{
-          fontSize: 16,
-          fontFamily: "roboto_bold",
-          color: "#7851A9"
-        }}>View All</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "roboto_bold",
+            color: "#7851A9",
+          }}
+        >
+          View All
+        </Text>
       </View>
-   <FlatList
-      data={categoryList}
-      horizontal={true}
-      renderItem={({item,index})=>(
-        <CategoryItem 
-        Category={item} 
-        key={index}
-        onCategoryPress={(Category)=>router.push('/businesslist/'+item.Name)}
-        
+      {loading ? (
+        <ActivityIndicator size="large" color="#7851A9" style={{ marginTop: '50%'}}/>
+      ) : categoryList.length > 0 ? (
+        <FlatList
+          data={categoryList}
+          horizontal={true}
+          renderItem={({ item, index }) => (
+            <CategoryItem
+              Category={item}
+              key={index}
+              onCategoryPress={() => router.push("/businesslist/" + item.Name)}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          onRefresh={GetCategoryList}
+          refreshing={loading}
         />
+      ) : (
+        <Text style={{ fontSize: 18,
+          fontWeight: 'bold',
+          color: '#ff4d4d', 
+          textAlign: 'center',
+          marginTop: '50%',}}>No Categories Found</Text>
       )}
-   />
-
     </View>
   );
 }

@@ -9,6 +9,7 @@ export default function BusinessCart({ business }) {
         backgroundColor: "#E6E6FA",
         borderRadius: 20,
         padding: 10,
+        marginLeft:15,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,

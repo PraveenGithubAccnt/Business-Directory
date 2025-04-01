@@ -1,38 +1,36 @@
-import { View, Text, FlatList, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
 import { collection, getDocs, query, limit } from "firebase/firestore"; 
 import { db } from "../../Backend/FirebaseConfig";
 import BusinessCart from "./BusinessCart";
 
 export default function PopularBusiness() {
-  const [businessList, setbusinessList] = useState([]);
+  const [businessList, setBusinessList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-    GetBusinessList()
-  },[])
-  
-    const GetBusinessList=async()=>
-    { 
-      setbusinessList([]);
-      const q=query(collection(db,'BusinessList'),limit(10));
-      const querySnapshot=await getDocs(q);
-      querySnapshot.forEach((doc)=>{
-        // console.log(doc.data());
-        setbusinessList((prev) => [...prev, doc.data()]);
-      })
+  useEffect(() => {
+    GetBusinessList();
+  }, []);
+
+  const GetBusinessList = useCallback(async () => { 
+    try {
+      setLoading(true);
+      setBusinessList([]);
+      const q = query(collection(db, "BusinessList"), limit(10));
+      const querySnapshot = await getDocs(q);
+      const businesses = querySnapshot.docs.map(doc => doc.data());
+      setBusinessList(businesses);
+    } catch (error) {
+      console.error("Error fetching popular businesses:", error);
+    } finally {
+      setLoading(false);
     }
+  }, []);
 
   return (
-    <View style={{paddingLeft: 10,}}>
+    <View style={{ flex: 1, padding: 10 }}>
       {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          padding: 10,
-          marginBottom: 5,
-        }}
-      >
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 5 }}>
         <Text style={{ fontSize: 16, fontFamily: "roboto_bold", color: "black" }}>
           Popular Businesses
         </Text>
@@ -41,15 +39,28 @@ export default function PopularBusiness() {
         </Text>
       </View>
 
-      <FlatList
-        data={businessList}
-        horizontal={true}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => 
-        <BusinessCart business={item} 
-        
-        />}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#7851A9" style={{ marginTop: 200, alignSelf: "center" }} />
+      ) : businessList.length > 0 ? (
+        <FlatList
+          data={businessList}
+          horizontal={true}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => <BusinessCart business={item} />}
+          onRefresh={GetBusinessList}
+          refreshing={loading}
+        />
+      ) : (
+        <Text style={{
+          fontSize: 18,
+          fontWeight: "bold",
+          color: "#7851A9",
+          textAlign: "center",
+          marginTop: 200,
+        }}>
+          No Popular Businesses Found
+        </Text>
+      )}
     </View>
   );
 }
