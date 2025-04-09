@@ -4,60 +4,65 @@ import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { collection, getDocs, query, where } from "firebase/firestore"; 
 import { db } from "../../Backend/FirebaseConfig";
 import BusinessSearchCart from '../../components/BusinessSearch/BusinessSearchCart';
+
 export default function BusinessListByCategory() {
   const navigation = useNavigation();
   const { category } = useLocalSearchParams();
   const [businessList, setBusinessList] = useState([]); 
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     navigation.setOptions({ headerShown: true, headerTitle: category });
     getBusinessList();
-  }, [category]); 
+  }, [category, navigation]); 
 
   const getBusinessList = async () => {     
     try {
       setLoading(true);
       const q = query(collection(db, 'BusinessList'), where('category', '==', category));
       const querySnapshot = await getDocs(q);
-      const businesses = querySnapshot.docs.map(doc => doc.data());
-
-      console.log(businesses);
+      const businesses = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      // console.log(businesses);
       setBusinessList(businesses); 
     } catch (error) {
-      console.error("Error fetching business list:", error);
+      // console.error("Error fetching business list:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <View>
-
-      {businessList && businessList.length > 0 && loading==false? (
+    <View style={{ flex: 1, padding: 16 }}>
+      {businessList.length > 0 && !loading ? (
         <FlatList
-        onRefresh={getBusinessList}
-        refreshing={loading}
+          onRefresh={getBusinessList}
+          refreshing={loading}
           data={businessList}
-          renderItem={({ item, index }) => (
-            <BusinessSearchCart businesses={item} key={index} />
+          renderItem={({ item }) => (
+            <BusinessSearchCart businesses={item} />
           )}
-          keyExtractor={(item, index) => index.toString()} 
+          keyExtractor={(item) => item.id}
         />
-      ) : loading?<ActivityIndicator
-         style={{marginTop:'70%'}}
+      ) : loading ? (
+        <ActivityIndicator
+          style={{ marginTop: '70%' }}
           size={'large'}
           color={'#7851A9'}
-      />:
-      
-      (
-        <Text style={{  fontSize: 20,
+        />
+      ) : (
+        <Text style={{
+          fontSize: 20,
           fontWeight: 'bold',
-          color: '#7851A9', 
+          color: '#7851A9',
           textAlign: 'center',
-          marginTop: '50%'}}>
+          marginTop: '50%'
+        }}>
           No Business Found Near You
-          </Text>
+        </Text>
       )}
     </View>
   );
-  
 }

@@ -1,9 +1,12 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useRouter } from "expo-router";
 
 export default function BusinessSearchCart({ businesses }) {
+  const router = useRouter();
+
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         backgroundColor: "#E6E6FA",
@@ -11,13 +14,14 @@ export default function BusinessSearchCart({ businesses }) {
         padding: 12,
         marginHorizontal: 10,
         marginVertical: 8,
-        alignItems: "flex-start", 
+        alignItems: "flex-start",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
       }}
+      onPress={() => router.push('/Businessdetails/' + businesses.id)}
     >
      
       <View style={{ width: 100, alignItems: "center" }}> 
@@ -75,6 +79,6 @@ export default function BusinessSearchCart({ businesses }) {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

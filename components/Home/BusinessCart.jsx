@@ -51,7 +51,6 @@ export default function BusinessCart({ business }) {
           {business.category}
         </Text>
 
-        {/* Address with 📍 icon */}
         <Text
           style={{
             fontFamily: "roboto_medium",
