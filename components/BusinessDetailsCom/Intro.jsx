@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, Animated } from 'react-native';
+import { View, Image, TouchableOpacity, Animated, Text } from 'react-native';
 import React, { useState, useRef } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -24,7 +24,7 @@ export default function Intro({ business }) {
     // Optionally: handle backend update here
   };
 
-  const imageUrl = business?.imageUrl || 'https://via.placeholder.com/300';
+ 
 
   return (
     <View style={{ position: 'relative' }}>
@@ -51,13 +51,34 @@ export default function Intro({ business }) {
       </View>
 
       {/* Business Image with rounded corners */}
-      <View style={{ borderRadius: 30, overflow: 'hidden' }}>
+      <View style={{ borderRadius: 20, overflow: 'hidden' }}>
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: business?.imageUrl }}
           style={{ width: '100%', height: 300 }}
           resizeMode="cover"
         />
       </View>
+
+     <View style={{
+          padding: 20,
+          marginTop:-20,
+          backgroundColor: '#E6E6FA',
+          borderRadius:10
+          }} >
+     
+      <Text style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: '#7851A9'}}>
+        {business.name}
+      </Text>
+      <Text style={{
+          fontSize: 15,
+          fontFamily: "roboto"}}>
+      📍 {business.address}
+      </Text>
+     </View>
+
     </View>
   );
 }

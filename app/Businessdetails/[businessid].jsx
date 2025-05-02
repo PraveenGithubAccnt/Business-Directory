@@ -4,6 +4,7 @@ import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../Backend/FirebaseConfig";
 import Intro from '../../components/BusinessDetailsCom/Intro';
+import ActionButton from '../../components/BusinessDetailsCom/ActionButton';
 
 export default function BusinessidDetails() {
   const { businessid } = useLocalSearchParams();
@@ -51,7 +52,7 @@ export default function BusinessidDetails() {
         <Intro business={business} />
 
         {/* Action Button section */}
-       
+        <ActionButton business={business}/>
         {/* About section */}
 
         </View>
