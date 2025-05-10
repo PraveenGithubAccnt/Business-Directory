@@ -1,10 +1,12 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../Backend/FirebaseConfig";
 import Intro from '../../components/BusinessDetailsCom/Intro';
 import ActionButton from '../../components/BusinessDetailsCom/ActionButton';
+import About from '../../components/BusinessDetailsCom/About';
+import Review from '../../components/BusinessDetailsCom/Review';
 
 export default function BusinessidDetails() {
   const { businessid } = useLocalSearchParams();
@@ -24,8 +26,7 @@ export default function BusinessidDetails() {
 
       if (docSnap.exists()) {
         const businessData = docSnap.data();
-        setBusiness(businessData);
-        // Set header title to business name
+        setBusiness({ id: docSnap.id, ...businessData }); // ✅ include the ID
         navigation.setOptions({
           headerShown: true,
           headerTitle: businessData.name || 'Business Details',
@@ -41,24 +42,21 @@ export default function BusinessidDetails() {
   };
 
   return (
-    <View style={{ padding: 16, flex: 1 }}>
+    <View style={{ flex: 1 }}>
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#7851A9" />
         </View>
       ) : business ? (
-        <View style={{ flex: 1 }}>
-        {/* Intro section */}
-        <Intro business={business} />
-
-        {/* Action Button section */}
-        <ActionButton business={business}/>
-        {/* About section */}
-
-        </View>
+        <ScrollView contentContainerStyle={{ padding: 16 }}>
+          <Intro business={business} />
+          <ActionButton business={business} />
+          <About business={business} />
+          <Review business={business} /> {/* ✅ passes `id` now */}
+        </ScrollView>
       ) : (
-        <Text style={{ textAlign: 'center' }}>No business data found.</Text>
+        <Text style={{ textAlign: 'center', marginTop: 20 }}>No business data found.</Text>
       )}
     </View>
-  );
+  );    
 }
