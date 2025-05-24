@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Backend/FirebaseConfig";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function Review({ business }) {
   const [rating, setRating] = useState(4);
   const [userInput, setUserInput] = useState("");
+  const { user } = useUser(); // 👈 Access Clerk user
 
   const onSubmit = async () => {
     if (!business?.id) {
@@ -23,6 +25,9 @@ export default function Review({ business }) {
             rating: rating,
             review: userInput,
             date: new Date().toISOString(),
+            userEmail: user?.primaryEmailAddress?.emailAddress || "",
+            userImage: user?.imageUrl || "",
+            userName: user?.fullName || "",
           },
         ],
       });

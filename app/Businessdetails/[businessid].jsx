@@ -26,7 +26,7 @@ export default function BusinessidDetails() {
 
       if (docSnap.exists()) {
         const businessData = docSnap.data();
-        setBusiness({ id: docSnap.id, ...businessData }); // ✅ include the ID
+        setBusiness({ id: docSnap.id, ...businessData }); 
         navigation.setOptions({
           headerShown: true,
           headerTitle: businessData.name || 'Business Details',
@@ -40,7 +40,7 @@ export default function BusinessidDetails() {
       setLoading(false);
     }
   };
-
+   
   return (
     <View style={{ flex: 1 }}>
       {loading ? (
@@ -52,7 +52,7 @@ export default function BusinessidDetails() {
           <Intro business={business} />
           <ActionButton business={business} />
           <About business={business} />
-          <Review business={business} /> {/* ✅ passes `id` now */}
+          <Review business={business} /> 
         </ScrollView>
       ) : (
         <Text style={{ textAlign: 'center', marginTop: 20 }}>No business data found.</Text>

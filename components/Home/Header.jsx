@@ -6,7 +6,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function Header() {
   const { user } = useUser();
-  const insets = useSafeAreaInsets(); 
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -43,7 +43,7 @@ export default function Header() {
                 color: "#fff",
               }}
             >
-              {user?.fullName || "Guest"}
+              {user?.username || "Guest"}
             </Text>
           </View>
         </View>
@@ -64,18 +64,20 @@ export default function Header() {
           <MaterialCommunityIcons
             name="map-search-outline"
             size={26}
-            color="#7851A9"/>
+            color="#7851A9"
+          />
 
           <TextInput
             style={{
               fontSize: 14,
               fontFamily: "roboto_medium",
               color: "#7851A9",
-              flex: 1, 
+              flex: 1,
               marginLeft: 10,
             }}
             placeholder="Search..."
-            placeholderTextColor="#7851A9"/>
+            placeholderTextColor="#7851A9"
+          />
         </View>
       </View>
     </>

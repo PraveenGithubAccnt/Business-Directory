@@ -21,10 +21,7 @@ export default function Intro({ business }) {
     ]).start();
 
     setIsFavorited((prev) => !prev);
-    // Optionally: handle backend update here
   };
-
- 
 
   return (
     <View style={{ position: 'relative' }}>
@@ -59,26 +56,32 @@ export default function Intro({ business }) {
         />
       </View>
 
-     <View style={{
+      <View
+        style={{
           padding: 20,
-          marginTop:-20,
+          marginTop: -20,
           backgroundColor: '#E6E6FA',
-          borderRadius:10
-          }} >
-     
-      <Text style={{
-          fontSize: 20,
-          fontWeight: 'bold',
-          color: '#7851A9'}}>
-        {business.name}
-      </Text>
-      <Text style={{
-          fontSize: 15,
-          fontFamily: "roboto"}}>
-      📍 {business.address}
-      </Text>
-     </View>
-
+          borderRadius: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#7851A9',
+          }}
+        >
+          {business.name}
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontFamily: 'roboto',
+          }}
+        >
+          📍 {business?.address ?? 'Address not available'}
+        </Text>
+      </View>
     </View>
   );
 }
