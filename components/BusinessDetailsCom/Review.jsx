@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import React, { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { doc, updateDoc } from "firebase/firestore";
@@ -8,7 +8,8 @@ import { useUser } from "@clerk/clerk-expo";
 export default function Review({ business }) {
   const [rating, setRating] = useState(4);
   const [userInput, setUserInput] = useState("");
-  const { user } = useUser(); // 👈 Access Clerk user
+  const [reviews, setReviews] = useState(business.reviews || []);
+  const { user } = useUser();
 
   const onSubmit = async () => {
     if (!business?.id) {
@@ -16,23 +17,23 @@ export default function Review({ business }) {
       return;
     }
 
+    const newReview = {
+      rating: rating,
+      review: userInput,
+      date: new Date().toISOString(),
+      userEmail: user?.primaryEmailAddress?.emailAddress || "",
+      userImage: user?.imageUrl || "",
+      userName: user?.fullName || "",
+    };
+
     try {
       const docRef = doc(db, "BusinessList", business.id);
       await updateDoc(docRef, {
-        reviews: [
-          ...(business.reviews || []),
-          {
-            rating: rating,
-            review: userInput,
-            date: new Date().toISOString(),
-            userEmail: user?.primaryEmailAddress?.emailAddress || "",
-            userImage: user?.imageUrl || "",
-            userName: user?.fullName || "",
-          },
-        ],
+        reviews: [...(business.reviews || []), newReview],
       });
 
       Alert.alert("Thank you!", "Your review has been submitted.");
+      setReviews((prevReviews) => [...prevReviews, newReview]);
       setUserInput("");
       setRating(4);
     } catch (error) {
@@ -89,6 +90,72 @@ export default function Review({ business }) {
           Submit Review
         </Text>
       </TouchableOpacity>
+
+      {/* Review List */}
+      <View>
+        {reviews.length > 0 ? (
+          reviews
+            .slice()
+            .reverse() 
+            .map((review, index) => (
+              <View
+                key={index}
+                style={{
+                  padding: 10,
+                  borderRadius: 8,
+                  marginTop: 10,
+                  flexDirection: "row",
+                }}
+              >
+                {/* Avatar or Initial */}
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: "#7851A9",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: 10,
+                  }}
+                >
+                  {review.userImage ? (
+                    <Image
+                      source={{ uri: review.userImage }}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                      }}
+                    />
+                  ) : (
+                    <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                      {review.userName ? review.userName.charAt(0).toUpperCase() : "A"}
+                    </Text>
+                  )}
+                </View>
+
+                {/* Review Content */}
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: "bold", color: "#000" }}>
+                    {review.userName || "Anonymous"}
+                  </Text>
+
+                  <Rating
+                    readonly
+                    startingValue={review.rating}
+                    imageSize={16}
+                    style={{ alignItems: "flex-start", marginVertical: 2 }}
+                  />
+
+                  <Text style={{ color: "#333", marginTop: 2 }}>{review.review}</Text>
+                </View>
+              </View>
+            ))
+        ) : (
+          <Text>No reviews yet.</Text>
+        )}
+      </View>
     </View>
   );
 }

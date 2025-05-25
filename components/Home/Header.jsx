@@ -1,5 +1,4 @@
 import { View, Text, Image, StatusBar, TextInput } from "react-native";
-import React from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -15,7 +14,7 @@ export default function Header() {
       <View
         style={{
           backgroundColor: "#7851A9",
-          paddingTop: insets.top + 10, // Ensures content is below the notch
+          paddingTop: insets.top + 10, 
           paddingHorizontal: 15,
           paddingBottom: 15,
         }}

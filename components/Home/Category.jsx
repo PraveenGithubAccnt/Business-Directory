@@ -1,11 +1,12 @@
 import { View, Text, FlatList, Image,ActivityIndicator } from "react-native";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../Backend/FirebaseConfig";
 import { useState } from "react";
 import CategoryItem from "./CategoryItem";
 import { useRouter } from "expo-router";
-export default function Category() {
+export default function Category({explore=false, onCategorySelect})
+{
   const [categoryList, setcategoryList] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -26,10 +27,19 @@ export default function Category() {
     }
     setLoading(false);
   };
-
+   const onCategoryPressHandler = (item) => 
+    {
+    if (!explore) {
+      router.push("/businesslist/" + item.Name);
+    } 
+    else 
+    {
+      onCategorySelect(item.Name);
+    }
+  }
   return (
     <View>
-      <View
+      { !explore && <View
         style={{
           display: "flex",
           flexDirection: "row",
@@ -57,7 +67,7 @@ export default function Category() {
         >
           View All
         </Text>
-      </View>
+      </View>}
       {loading ? (
         <ActivityIndicator size="large" color="#7851A9" style={{ marginTop: '50%'}}/>
       ) : categoryList.length > 0 ? (
@@ -68,7 +78,7 @@ export default function Category() {
             <CategoryItem
               Category={item}
               key={index}
-              onCategoryPress={() => router.push("/businesslist/" + item.Name)}
+              onCategoryPress={(categories) => onCategoryPressHandler(item)}
             />
           )}
           keyExtractor={(item, index) => index.toString()}
