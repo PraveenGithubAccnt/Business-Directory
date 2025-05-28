@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.praveen_26.Business_dirty"
     },
     "web": {
       "bundler": "metro",
@@ -32,13 +33,23 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow access to your photos to enable sharing with friends."
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "clerkPublishableKey": "pk_test_Y2l2aWwtZWdyZXQtNzMuY2xlcmsuYWNjb3VudHMuZGV2JA"
+      "clerkPublishableKey": "pk_test_Y2l2aWwtZWdyZXQtNzMuY2xlcmsuYWNjb3VudHMuZGV2JA",
+      "router": {},
+      "eas": {
+        "projectId": "6c2e8c50-f585-4735-9eab-b01ea07a705e"
+      }
     }
   }
 }

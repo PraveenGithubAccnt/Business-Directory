@@ -1,7 +1,6 @@
-import { View, Text, Image, StatusBar, TextInput } from "react-native";
+import { View, Text, Image, StatusBar } from "react-native";
 import { useUser } from "@clerk/clerk-expo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function Header() {
   const { user } = useUser();
@@ -14,7 +13,7 @@ export default function Header() {
       <View
         style={{
           backgroundColor: "#7851A9",
-          paddingTop: insets.top + 10, 
+          paddingTop: insets.top + 10,
           paddingHorizontal: 15,
           paddingBottom: 15,
         }}
@@ -46,38 +45,19 @@ export default function Header() {
             </Text>
           </View>
         </View>
-        <View
+
+        {/* Tagline */}
+        <Text
           style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-            backgroundColor: "#fff",
-            padding: 3,
-            marginVertical: 5,
-            borderRadius: 15,
             marginTop: 15,
+            fontSize: 14,
+            fontFamily: "roboto_medium",
+            color: "#fff",
+            textAlign: "center",
           }}
         >
-          {/* search bar */}
-          <MaterialCommunityIcons
-            name="map-search-outline"
-            size={26}
-            color="#7851A9"
-          />
-
-          <TextInput
-            style={{
-              fontSize: 14,
-              fontFamily: "roboto_medium",
-              color: "#7851A9",
-              flex: 1,
-              marginLeft: 10,
-            }}
-            placeholder="Search..."
-            placeholderTextColor="#7851A9"
-          />
-        </View>
+          Supporting Local, Building Together.
+        </Text>
       </View>
     </>
   );

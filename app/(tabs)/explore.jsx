@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native';
+import { SafeAreaView, View, Text, TextInput } from 'react-native';
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Category from '../../components/Home/Category'; 
 import { db } from "../../Backend/FirebaseConfig";
@@ -26,7 +26,6 @@ export default function Explore() {
       });
       
       setBusinesslist(businesses); 
-      // console.log("Businesses fetched:", businesses);
 
     } catch (error) {
       console.error("Error fetching businesses:", error);
@@ -34,7 +33,7 @@ export default function Explore() {
   };
 
   return (
-    <View style={{ padding: 15 }}>
+    <SafeAreaView style={{ flex: 1, padding: 15 }}>
       <Text style={{ fontSize: 20, fontFamily: "roboto_bold" }}>
         Explore More
       </Text>
@@ -77,7 +76,6 @@ export default function Explore() {
       {/* Categories */}
       <Category
         onCategorySelect={(category) => {
-          // console.log("Selected category:", category);
           GetBusinessByCategory(category);
         }}
         explore={true}
@@ -85,6 +83,6 @@ export default function Explore() {
       
       {/* Businesses List */}
       <ExploreBusinessList businesslist={businesslist} />
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,27 +1,32 @@
-import React from 'react';
-import { SafeAreaView, FlatList, View, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet,Text } from 'react-native';
 import ExploreBusinessCart from './BusinessExploreCart';
 
 export default function ExploreBusinessList({ businesslist }) {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={businesslist}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <ExploreBusinessCart business={item} />}
-        contentContainerStyle={styles.listContent}
-        ListFooterComponent={<View style={{ height: 170 }} />}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={{ padding: 20, alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, color: '#888' }}>No businesses found.</Text>
+          </View>
+        }
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, 
+    backgroundColor: '#fff',
   },
-  listContent: {
+  contentContainer: {
     padding: 10,
-    paddingBottom: 170, 
+    paddingBottom: 10, 
   },
 });
